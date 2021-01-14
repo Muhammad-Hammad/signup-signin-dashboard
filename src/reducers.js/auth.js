@@ -7,10 +7,9 @@ import {
   LOGOUT_FAILURE,
   VERIFY_REQUEST,
   VERIFY_SUCCESS,
-} from "../actions/";
+} from "../actions";
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (
+export default () => (
   state = {
     isLoggingIn: false,
     isLoggingOut: false,
