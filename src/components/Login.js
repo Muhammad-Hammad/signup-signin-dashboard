@@ -28,7 +28,7 @@ const styles = () => ({
   avatar: {
     marginLeft: "auto",
     marginRight: "auto",
-    backgroundColor: "#f50057"
+    backgroundColor: "#82fc58"
   },
   form: {
     marginTop: 1
