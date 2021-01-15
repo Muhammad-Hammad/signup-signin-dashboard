@@ -1,4 +1,4 @@
-import { myFirebase } from "../firebase/firebase";
+import { myFirebase } from "../../firebase/firebase";
 
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
@@ -11,6 +11,10 @@ export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
 
 export const VERIFY_REQUEST = "VERIFY_REQUEST";
 export const VERIFY_SUCCESS = "VERIFY_SUCCESS";
+
+export const SIGNUP_REQUEST = "SIGNUP_REQUEST";
+export const SIGNUP_SUCCESS = "SIGNUP SUCCESS";
+export const SIGNUP_FAILURE = "SIGNUP FAILURE";
 
 const requestLogin = () => {
   return {

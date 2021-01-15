@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { loginUser } from "../actions";
-import { withStyles } from "@material-ui/styles";
+import { loginUser } from "../redux/actions";
+import { makeStyles } from '@material-ui/core/styles';
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -16,46 +16,36 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
 
-const styles = () => ({
-  "@global": {
-    body: {
-      backgroundColor: "#fff"
-    }
-  },
+const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: 100,
-    display: "flex",
-    padding: 20,
-    flexDirection: "column",
-    alignItems: "center"
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   avatar: {
-    marginLeft: "auto",
-    marginRight: "auto",
-    backgroundColor: "green"
+    margin: theme.spacing(1),
+    backgroundColor: "green",
   },
   form: {
-    marginTop: 1
-  },
-  errorText: {
-    color: "#f50057",
-    marginBottom: 5,
-    textAlign: "center"
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: (3, 0, 2),
-  }
-});
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
-function Login(props) {
+function Login() {
     let [newEmail,setEmail] = useState('')
     let [newPassword,setPassword] = useState('')
+    const state = useSelector(state => state.auth)
+    const dispatch = useDispatch()
     const handleSubmit = () => {
-        const { dispatch } = props;
-    
         dispatch(loginUser(newEmail, newPassword));
       };
-    const { classes, loginError, isAuthenticated } = props;
+    const { loginError, isAuthenticated } = state;
+    const classes= useStyles();
     if (isAuthenticated) {
         return <Redirect to="/" />;
       } else {
@@ -127,15 +117,17 @@ function Login(props) {
     )
             }
 }
-function mapStateToProps(state) {
-    return {
-      isLoggingIn: state.auth.isLoggingIn,
-      loginError: state.auth.loginError,
-      isAuthenticated: state.auth.isAuthenticated
-    };
-  }
+// function mapStateToProps(state) {
+//     return {
+//       isLoggingIn: state.auth.isLoggingIn,
+//       loginError: state.auth.loginError,
+//       isAuthenticated: state.auth.isAuthenticated
+//     };
+//   }
 
-export default withStyles(styles)(connect(mapStateToProps)(Login));
+export default(Login);
+//export default withStyles(styles)(connect(mapStateToProps)(Login));
+
 
 
 

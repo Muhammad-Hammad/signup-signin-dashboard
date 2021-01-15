@@ -1,12 +1,16 @@
-import { connect } from "react-redux";
-import { logoutUser } from "../actions";
+import { useSelector,useDispatch } from "react-redux";
+import { logoutUser } from "../redux/actions";
 
-function Home(props) {
-    const { isLoggingOut, logoutError } = props;
+
+function Home() {
+   const dispatch = useDispatch()
     const handleLogout = () => {
-        const { dispatch } = props;
+    
         dispatch(logoutUser());
       };
+  
+    const state = useSelector(state => state.auth)
+    const {isLoggingOut, logoutError} = state
     return (
         <div>
             <h1>This is your app's protected area.</h1>
@@ -17,11 +21,11 @@ function Home(props) {
         </div>
     )
 }
-function mapStateToProps(state) {
-    return {
-      isLoggingOut: state.auth.isLoggingOut,
-      logoutError: state.auth.logoutError
-    };
-  }
+// function mapStateToProps(state) {
+//     return {
+//       isLoggingOut: state.auth.isLoggingOut,
+//       logoutError: state.auth.logoutError
+//     };
+//   }
 
-export default connect(mapStateToProps)(Home);
+export default (Home);

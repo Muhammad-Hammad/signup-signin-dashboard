@@ -7,7 +7,10 @@ import {
   LOGOUT_FAILURE,
   VERIFY_REQUEST,
   VERIFY_SUCCESS,
-} from "../actions/";
+  SIGNUP_FAILURE,
+  SIGNUP_SUCCESS,
+  SIGNUP_REQUEST
+} from "../actions";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (
@@ -18,6 +21,8 @@ export default (
     loginError: false,
     logoutError: false,
     isAuthenticated: false,
+    is_Signup: false,
+    signUpError: false,
     user: {},
   },
   action
@@ -73,6 +78,24 @@ export default (
         ...state,
         isVerifying: false,
       };
+    case SIGNUP_REQUEST:
+      return{
+        ...state,
+        is_Signup: true,
+        signUpError: false
+
+      };
+      case SIGNUP_SUCCESS:
+      return{
+        ...state,
+          signupError: false,
+      };
+      case SIGNUP_FAILURE:
+      return{
+        ...state,
+          signUpError: true,
+      };
+      
     default:
       return state;
   }
