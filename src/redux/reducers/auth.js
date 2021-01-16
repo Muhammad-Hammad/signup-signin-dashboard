@@ -9,8 +9,38 @@ import {
   VERIFY_SUCCESS,
   SIGNUP_FAILURE,
   SIGNUP_SUCCESS,
-  SIGNUP_REQUEST
-} from "../actions";
+  SIGNUP_REQUEST,
+} from "../Constants";
+
+// eslint-disable-next-line import/no-anonymous-default-export
+
+// const initState = {
+//   login:{
+//     loading:false,
+//     error:'',
+//     success:'',
+//   },
+//   logout:{
+//     loading:false,
+//     error:'',
+//     success:''
+//   },
+//   signup:{
+//     loading: '',
+//     error:'',
+//     success:''
+//   }
+// }
+// export default function Auth(state = initState,action){
+//   switch (action.type) {
+//     case value:
+
+//       break;
+
+//     default:
+//       break;
+//   }
+// }
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (
@@ -79,23 +109,23 @@ export default (
         isVerifying: false,
       };
     case SIGNUP_REQUEST:
-      return{
+      return {
         ...state,
         is_Signup: true,
-        signUpError: false
+        signUpError: false,
+      };
+    case SIGNUP_SUCCESS:
+      return {
+        ...state,
+        signupError: false,
+        user: action.user,
+      };
+    case SIGNUP_FAILURE:
+      return {
+        ...state,
+        signUpError: true,
+      };
 
-      };
-      case SIGNUP_SUCCESS:
-      return{
-        ...state,
-          signupError: false,
-      };
-      case SIGNUP_FAILURE:
-      return{
-        ...state,
-          signUpError: true,
-      };
-      
     default:
       return state;
   }

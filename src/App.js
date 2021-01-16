@@ -7,7 +7,7 @@ import Login from "./components/Login";
 import SignUp from "./components/Signup";
 
 function App() {
-  const state = useSelector(state => state.auth)
+  const state = useSelector((state) => state.auth);
 
   const { isAuthenticated, isVerifying } = state;
   return (
