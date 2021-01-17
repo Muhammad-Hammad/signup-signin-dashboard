@@ -72,9 +72,11 @@ const receiveSignup = (user) => {
     user,
   };
 };
-const signupError = () => {
+const signupError = (error) => {
+  // console.log(error);
   return {
     type: SIGNUP_FAILURE,
+    signUpError: error.message,
   };
 };
 
@@ -121,8 +123,8 @@ export const signupUser = (fname, lname, email, password) => (dispatch) => {
         });
     })
     .catch((error) => {
-      console.log("error", error);
-      dispatch(signupError());
+      // console.log("error", error.message);
+      dispatch(signupError(error));
     });
 };
 

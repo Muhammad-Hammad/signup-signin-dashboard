@@ -34,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  errorText: {
+    color: "red",
+    fontFamily: "monospace",
+  },
 }));
 
 export default function SignUp() {
@@ -46,11 +50,14 @@ export default function SignUp() {
   const state = useSelector((state) => state.auth);
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(fname, lname, newEmail, newPassword);
+    // console.log(fname, lname, newEmail, newPassword);
     dispatch(signupUser(fname, lname, newEmail, newPassword));
+    setFname("");
+    setLname("");
     e.target.reset();
   };
-  const { isAuthenticated } = state;
+  const { isAuthenticated, signUpError, signUpErrorMsg } = state;
+  // console.log(signUpError);
   if (isAuthenticated) {
     return <Redirect to="/" />;
   } else {
@@ -71,24 +78,34 @@ export default function SignUp() {
                   autoComplete="fname"
                   name="firstName"
                   variant="outlined"
+                  value={fname}
                   required
                   fullWidth
                   id="firstName"
                   label="First Name"
                   autoFocus
-                  onChange={(e) => setFname(e.target.value)}
+                  onChange={(e) => {
+                    let value = e.target.value;
+                    value = value.replaceAll(/[^A-Za-z]/gi, "");
+                    setFname(value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   variant="outlined"
                   required
+                  value={lname}
                   fullWidth
                   id="lastName"
                   label="Last Name"
                   name="lastName"
                   autoComplete="lname"
-                  onChange={(e) => setLname(e.target.value)}
+                  onChange={(e) => {
+                    let value = e.target.value;
+                    value = value.replaceAll(/[^A-Za-z]/gi, "");
+                    setLname(value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -117,6 +134,11 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
+            {signUpErrorMsg && (
+              <Typography component="p" className={classes.errorText}>
+                {signUpError}
+              </Typography>
+            )}
             <Button
               type="submit"
               fullWidth

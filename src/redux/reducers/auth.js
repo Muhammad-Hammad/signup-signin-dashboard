@@ -52,7 +52,8 @@ export default (
     logoutError: false,
     isAuthenticated: false,
     is_Signup: false,
-    signUpError: false,
+    signUpError: "",
+    signUpErrorMsg: false,
     user: {},
   },
   action
@@ -112,18 +113,19 @@ export default (
       return {
         ...state,
         is_Signup: true,
-        signUpError: false,
+        // signUpError: false,
       };
     case SIGNUP_SUCCESS:
       return {
         ...state,
-        signupError: false,
+        // signupError: false,
         user: action.user,
       };
     case SIGNUP_FAILURE:
       return {
         ...state,
-        signUpError: true,
+        signUpError: action.signUpError,
+        signUpErrorMsg: true,
       };
 
     default:
