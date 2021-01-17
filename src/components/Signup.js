@@ -50,14 +50,12 @@ export default function SignUp() {
   const state = useSelector((state) => state.auth);
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(fname, lname, newEmail, newPassword);
     dispatch(signupUser(fname, lname, newEmail, newPassword));
     setFname("");
     setLname("");
     e.target.reset();
   };
   const { isAuthenticated, signUpError, signUpErrorMsg } = state;
-  // console.log(signUpError);
   if (isAuthenticated) {
     return <Redirect to="/" />;
   } else {
