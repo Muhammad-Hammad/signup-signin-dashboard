@@ -1,5 +1,5 @@
 import { Route, Redirect } from "react-router-dom";
-
+import Loader from "./loader";
 const ProtectedRoute = ({
   component: Component,
   isAuthenticated,
@@ -8,16 +8,16 @@ const ProtectedRoute = ({
 }) => (
   <Route
     {...rest}
-    render={props =>
+    render={(props) =>
       isVerifying ? (
-        <div />
+        <Loader />
       ) : isAuthenticated ? (
         <Component {...props} />
       ) : (
         <Redirect
           to={{
             pathname: "/login",
-            state: { from: props.location }
+            state: { from: props.location },
           }}
         />
       )

@@ -8,7 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 import { SignupSchema } from "../Validation/Validation";
-
+import Loader from "./loader";
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Checkbox from '@material-ui/core/Checkbox';
 import Link from "@material-ui/core/Link";
@@ -63,6 +63,7 @@ export default function SignUp() {
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   let initialValues = {
     firstName: "",
     lastName: "",
@@ -71,6 +72,7 @@ export default function SignUp() {
   };
   const state = useSelector((state) => state.auth);
   const handleSubmit = (e, { resetForm, setSubmitting }) => {
+    setLoading(true);
     // dispatch(signupUser(e.firstName, e.lastName, e.email, e.password));
     dispatch(signupUser(e.firstName, e.lastName, e.email, e.password));
     resetForm({
@@ -199,9 +201,11 @@ export default function SignUp() {
                   color="primary"
                   className={classes.submit}
                   disabled={!dirty}
+                  // onClick={setLoading(true)}
+
                   // onClick={handleReset}
                 >
-                  Sign Up
+                  {!loading ? "Sign Up" : <Loader />}
                 </Button>
                 <Grid container justify="flex-end">
                   <Grid item>
