@@ -12,9 +12,9 @@ function Home() {
   //   console.log(user);
   return (
     <div>
-      <h1>This is your app's protected area.</h1>
-      <h3>email:{user.email}</h3>
-      <h3>uid:{user.uid}</h3>
+      <h1>This is your app's protected area.🚀🚀🚀</h1>
+      <h3>email:{user.email} 🚀🚀🚀</h3>
+      <h3>uid:{user.uid} 🚀🚀🚀🚀🚀 </h3>
       <p>Any routes here will also be protected</p>
       <button onClick={handleLogout}>Logout</button>
       {isLoggingOut && <p>Logging Out....</p>}

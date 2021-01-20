@@ -20,16 +20,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { signupUser } from "../redux/actions";
 
-// let SignupSchema = yup.object({
-//   firstName: yup.string().required("This field is required."),
-//   lastName: yup.string().required("This field is required."),
-//   email: yup.string().email().required("This field is required."),
-//   password: yup
-//     .string()
-//     .min(6, "Password is too short.")
-//     .max(20, "Password is too long.")
-//     .required("This field is required."),
-// });
 // const regex = /[^A-Za-z]/gi;
 
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -58,10 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
-  // const [firstName, setfirstName] = useState("");
-  // const [lastName, setlastName] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
+
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   let initialValues = {
@@ -71,26 +58,24 @@ export default function SignUp() {
     password: "",
   };
   const state = useSelector((state) => state.auth);
-  const handleSubmit = (e, { resetForm, setSubmitting }) => {
+  const handleSubmit = (e, { resetForm }) => {
     setLoading(true);
-    // dispatch(signupUser(e.firstName, e.lastName, e.email, e.password));
+
     dispatch(signupUser(e.firstName, e.lastName, e.email, e.password));
     resetForm({
       values: {
         firstName: "",
+        lastName: "",
         email: "",
         password: "",
-        lastName: "",
       },
     });
-
-    // e.preventDefault();
-    // dispatch(signupUser(firstName, lastName, email, password));
-    // setfirstName("");
-    // setlastName("");
-    // e.target.reset();
   };
-  const { isAuthenticated, signUpError, signUpErrorMsg } = state;
+  let { isAuthenticated, signUpError, signUpErrorMsg } = state;
+  if (signUpErrorMsg && loading) {
+    setLoading(false);
+  }
+
   if (isAuthenticated) {
     return <Redirect to="/" />;
   } else {
@@ -114,7 +99,9 @@ export default function SignUp() {
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <TextField
-                      error={errors.firstName && touched.firstName}
+                      error={
+                        Boolean(errors.firstName) && Boolean(touched.firstName)
+                      }
                       autoComplete="firstName"
                       name="firstName"
                       variant="outlined"
@@ -129,12 +116,18 @@ export default function SignUp() {
                           ? errors.firstName
                           : null
                       }
+                      onFocus={() => {
+                        signUpError = "";
+                        touched.firstName = "";
+                      }}
                       onChange={handleChange}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
-                      error={errors.lastName && touched.lastName}
+                      error={
+                        Boolean(errors.lastName) && Boolean(touched.lastName)
+                      }
                       variant="outlined"
                       required
                       value={values.lastName}
@@ -148,12 +141,16 @@ export default function SignUp() {
                           ? errors.lastName
                           : null
                       }
+                      onFocus={() => {
+                        signUpError = "";
+                        touched.lastName = "";
+                      }}
                       onChange={handleChange}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      error={errors.email && touched.email}
+                      error={Boolean(errors.email) && Boolean(touched.email)}
                       variant="outlined"
                       required
                       value={values.email}
@@ -165,12 +162,18 @@ export default function SignUp() {
                       helperText={
                         errors.email && touched.email ? errors.email : null
                       }
+                      onFocus={() => {
+                        signUpError = "";
+                        touched.email = "";
+                      }}
                       onChange={handleChange}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      error={errors.password && touched.password}
+                      error={
+                        Boolean(errors.password) && Boolean(touched.password)
+                      }
                       variant="outlined"
                       value={values.password}
                       required
@@ -185,10 +188,15 @@ export default function SignUp() {
                           ? errors.password
                           : null
                       }
+                      onFocus={() => {
+                        signUpError = "";
+                        touched.password = "";
+                      }}
                       onChange={handleChange}
                     />
                   </Grid>
                 </Grid>
+                {/* {console.log(errors)} */}
                 {signUpErrorMsg && (
                   <Typography component="p" className={classes.errorText}>
                     {signUpError}
@@ -201,9 +209,6 @@ export default function SignUp() {
                   color="primary"
                   className={classes.submit}
                   disabled={!dirty}
-                  // onClick={setLoading(true)}
-
-                  // onClick={handleReset}
                 >
                   {!loading ? "Sign Up" : <Loader />}
                 </Button>
