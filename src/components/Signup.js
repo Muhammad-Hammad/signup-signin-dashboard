@@ -71,12 +71,12 @@ export default function SignUp() {
       },
     });
   };
-  let { isAuthenticated, signUpError, signUpErrorMsg } = state;
-  if (signUpErrorMsg && loading) {
+  let { signup, login } = state;
+  if (signup.error && loading) {
     setLoading(false);
   }
 
-  if (isAuthenticated) {
+  if (signup.success || login.success) {
     return <Redirect to="/" />;
   } else {
     return (
@@ -117,7 +117,7 @@ export default function SignUp() {
                           : null
                       }
                       onFocus={() => {
-                        signUpError = "";
+                        signup.errorMsg = "";
                         touched.firstName = "";
                       }}
                       onChange={handleChange}
@@ -142,7 +142,7 @@ export default function SignUp() {
                           : null
                       }
                       onFocus={() => {
-                        signUpError = "";
+                        signup.errorMsg = "";
                         touched.lastName = "";
                       }}
                       onChange={handleChange}
@@ -163,7 +163,7 @@ export default function SignUp() {
                         errors.email && touched.email ? errors.email : null
                       }
                       onFocus={() => {
-                        signUpError = "";
+                        signup.errorMsg = "";
                         touched.email = "";
                       }}
                       onChange={handleChange}
@@ -189,7 +189,7 @@ export default function SignUp() {
                           : null
                       }
                       onFocus={() => {
-                        signUpError = "";
+                        signup.errorMsg = "";
                         touched.password = "";
                       }}
                       onChange={handleChange}
@@ -197,9 +197,9 @@ export default function SignUp() {
                   </Grid>
                 </Grid>
                 {/* {console.log(errors)} */}
-                {signUpErrorMsg && (
+                {signup.error && (
                   <Typography component="p" className={classes.errorText}>
-                    {signUpError}
+                    {signup.errorMsg}
                   </Typography>
                 )}
                 <Button

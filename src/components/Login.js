@@ -61,12 +61,12 @@ function Login() {
     });
   };
 
-  const { loginError, isAuthenticated } = state;
+  const { login, signup } = state;
   const classes = useStyles();
-  if (loginError && loading) {
+  if (login.error && loading) {
     setLoading(false);
   }
-  if (isAuthenticated) {
+  if (login.success || signup.success) {
     return <Redirect to="/" />;
   } else {
     return (
@@ -89,7 +89,7 @@ function Login() {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
-                      error={Boolean(errors.email && touched.email)}
+                      error={Boolean(errors.email) && Boolean(touched.email)}
                       variant="outlined"
                       required
                       value={values.email}
@@ -103,6 +103,7 @@ function Login() {
                       }
                       onFocus={() => {
                         // loginError = false;
+                        login.error = false;
                         touched.email = "";
                       }}
                       onChange={handleChange}
@@ -110,7 +111,9 @@ function Login() {
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      error={errors.password || touched.password}
+                      error={
+                        Boolean(errors.password) && Boolean(touched.password)
+                      }
                       variant="outlined"
                       value={values.password}
                       required
@@ -133,7 +136,7 @@ function Login() {
                     />
                   </Grid>
                 </Grid>
-                {loginError && (
+                {login.error && !values.email && (
                   <Typography component="p" className={classes.errorText}>
                     Incorrect email or password.
                   </Typography>

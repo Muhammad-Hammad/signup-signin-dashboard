@@ -22,7 +22,7 @@ const requestLogin = () => {
 const receiveLogin = (user) => {
   return {
     type: LOGIN_SUCCESS,
-    user,
+    payload: { user },
   };
 };
 
@@ -69,16 +69,83 @@ const requestSignup = () => {
 const receiveSignup = (user) => {
   return {
     type: SIGNUP_SUCCESS,
-    user,
+    payload: { user },
   };
 };
 const signupError = (error) => {
   // console.log(error);
   return {
     type: SIGNUP_FAILURE,
-    signUpError: error.message,
+    payload: { error },
   };
 };
+
+// const requestLogin = () => {
+//   return {
+//     type: LOGIN_REQUEST,
+//   };
+// };
+
+// const receiveLogin = (user) => {
+//   return {
+//     type: LOGIN_SUCCESS,
+//     user,
+//   };
+// };
+
+// const loginError = () => {
+//   return {
+//     type: LOGIN_FAILURE,
+//   };
+// };
+
+// const requestLogout = () => {
+//   return {
+//     type: LOGOUT_REQUEST,
+//   };
+// };
+
+// const receiveLogout = () => {
+//   return {
+//     type: LOGOUT_SUCCESS,
+//   };
+// };
+
+// const logoutError = () => {
+//   return {
+//     type: LOGOUT_FAILURE,
+//   };
+// };
+
+// const verifyRequest = () => {
+//   return {
+//     type: VERIFY_REQUEST,
+//   };
+// };
+
+// const verifySuccess = () => {
+//   return {
+//     type: VERIFY_SUCCESS,
+//   };
+// };
+// const requestSignup = () => {
+//   return {
+//     type: SIGNUP_REQUEST,
+//   };
+// };
+// const receiveSignup = (user) => {
+//   return {
+//     type: SIGNUP_SUCCESS,
+//     user,
+//   };
+// };
+// const signupError = (error) => {
+//   // console.log(error);
+//   return {
+//     type: SIGNUP_FAILURE,
+//     signUpError: error.message,
+//   };
+// };
 
 export const loginUser = (email, password) => (dispatch) => {
   dispatch(requestLogin());

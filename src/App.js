@@ -9,15 +9,15 @@ import SignUp from "./components/Signup";
 function App() {
   const state = useSelector((state) => state.auth);
 
-  const { isAuthenticated, isVerifying } = state;
+  const { signup, login, verify } = state;
   return (
     <Switch>
       <ProtectedRoute
         exact
         path="/"
         component={Home}
-        isAuthenticated={isAuthenticated}
-        isVerifying={isVerifying}
+        isAuthenticated={login.success || signup.success}
+        isVerifying={verify.verifying}
       />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />
