@@ -5,7 +5,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import SignUp from "./components/Signup";
-
+import forgotPassword from "./components/forgotPassword";
 function App() {
   const state = useSelector((state) => state.auth);
 
@@ -21,6 +21,7 @@ function App() {
       />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />
+      <Route path="/forgotPassword" component={forgotPassword} />
     </Switch>
   );
 }

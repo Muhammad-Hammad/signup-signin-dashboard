@@ -10,6 +10,8 @@ import {
   SIGNUP_FAILURE,
   SIGNUP_SUCCESS,
   SIGNUP_REQUEST,
+  FORGOT_REQUEST,
+  FORGOT_SUCCESS,
 } from "../Constants";
 
 const initState = {
@@ -32,6 +34,12 @@ const initState = {
   verify: {
     verifying: false,
     error: false,
+  },
+  forgot: {
+    loading: false,
+    error: false,
+    success: false,
+    errorMsg: "",
   },
   users: {
     user: {},
@@ -151,7 +159,24 @@ export default function Auth(state = initState, action) {
           errorMsg: action.payload.error,
         },
       };
-
+    case FORGOT_REQUEST:
+      return {
+        ...state,
+        forgot: {
+          loading: true,
+          error: false,
+          success: false,
+        },
+      };
+    case FORGOT_SUCCESS:
+      return {
+        ...state,
+        forgot: {
+          loading: false,
+          error: false,
+          success: true,
+        },
+      };
     default:
       return state;
   }

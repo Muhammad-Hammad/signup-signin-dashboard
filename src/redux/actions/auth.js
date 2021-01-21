@@ -11,8 +11,9 @@ import {
   SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
   SIGNUP_FAILURE,
+  FORGOT_REQUEST,
+  FORGOT_SUCCESS,
 } from "../Constants";
-
 const requestLogin = () => {
   return {
     type: LOGIN_REQUEST,
@@ -79,7 +80,21 @@ const signupError = (error) => {
     payload: { error },
   };
 };
-
+const requestForgot = () => {
+  return {
+    type: FORGOT_REQUEST,
+  };
+};
+const receiveForgot = () => {
+  return {
+    type: FORGOT_SUCCESS,
+  };
+};
+const forgotError = () => {
+  return {
+    type: FORGOT_SUCCESS,
+  };
+};
 // const requestLogin = () => {
 //   return {
 //     type: LOGIN_REQUEST,
@@ -203,4 +218,16 @@ export const verifyAuth = () => (dispatch) => {
     }
     dispatch(verifySuccess());
   });
+};
+
+export const sendResetEmail = (email) => (dispatch) => {
+  dispatch(requestForgot());
+  Firebase.auth()
+    .sendPasswordResetEmail(email)
+    .then(() => {
+      console.log("Success");
+    })
+    .catch(() => {
+      console.log("Error", Error);
+    });
 };

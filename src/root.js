@@ -5,6 +5,7 @@ import Firebase from "firebase";
 import Form from "./App.test";
 import App from "./App";
 import Loader from "./components/loader";
+import ForgotPassword from "./components/forgotPassword";
 // import Signup from "./components/Signup"
 import { firebaseConfig } from "./firebase/firebase";
 import configureStore from "./redux/configureStore";

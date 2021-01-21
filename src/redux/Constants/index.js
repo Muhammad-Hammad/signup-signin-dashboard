@@ -13,6 +13,10 @@ export const SIGNUP_REQUEST = "SIGNUP_REQUEST";
 export const SIGNUP_SUCCESS = "SIGNUP SUCCESS";
 export const SIGNUP_FAILURE = "SIGNUP FAILURE";
 
+export const FORGOT_REQUEST = "FORGOT_REQUEST";
+export const FORGOT_SUCCESS = "FORGOT_SUCCESS";
+export const FORGOT_FAILURE = "FORGOT_FAILURE";
+
 export const ADMIN = "ADMIN";
 export const COMPANY = "COMPANY";
 export const STUDENT = "STUDENT";

@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "green",
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -102,7 +102,6 @@ function Login() {
                         errors.email && touched.email ? errors.email : null
                       }
                       onFocus={() => {
-                        // loginError = false;
                         login.error = false;
                         touched.email = "";
                       }}
@@ -129,7 +128,7 @@ function Login() {
                           : null
                       }
                       onFocus={() => {
-                        // loginError = false;
+                        login.error = false;
                         touched.password = "";
                       }}
                       onChange={handleChange}
@@ -152,6 +151,11 @@ function Login() {
                   {!loading ? "Sign in" : <Loader />}
                 </Button>
                 <Grid container justify="flex-end">
+                  <Grid item xs>
+                    <Link href="/forgotPassword" variant="body2">
+                      Forgot password?
+                    </Link>
+                  </Grid>
                   <Grid item>
                     <Link href="/signup" variant="body2">
                       {"Don't have an account? Sign Up"}
