@@ -171,12 +171,7 @@ export const loginUser = (email, password, role) => (dispatch) => {
     .then((snapshot) => {
       const data = snapshot.val();
       const newArray = Object.entries(data);
-      console.log("data in obj", data);
-      console.log("data", newArray);
-      const filtered = newArray.filter(
-        (val, ind, arr) => email === val[1].email
-      );
-      console.log(filtered[0][1].email);
+      const filtered = newArray.filter((val) => email === val[1].email);
       const newEmail = filtered[0][1].email;
       console.log(newEmail);
       if (newEmail === email) {
@@ -184,7 +179,6 @@ export const loginUser = (email, password, role) => (dispatch) => {
           .signInWithEmailAndPassword(email, password)
           .then((user) => {
             console.log(user, "user");
-            // if( role == user.role)
             dispatch(receiveLogin(user));
           })
           .catch((error) => {
