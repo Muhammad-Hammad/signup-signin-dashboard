@@ -13,6 +13,11 @@ import { Form, Formik } from "formik";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
 import { SigninSchema } from "../Validation/Validation";
@@ -47,16 +52,18 @@ function Login() {
   let initialValues = {
     email: "",
     password: "",
+    role: "Student",
   };
   const state = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const handleSubmit = (values, { resetForm }) => {
     setLoading(true);
-    dispatch(loginUser(values.email, values.password));
+    dispatch(loginUser(values.email, values.password, values.role));
     resetForm({
       values: {
         email: "",
         password: "",
+        role: values.role,
       },
     });
   };
@@ -140,6 +147,27 @@ function Login() {
                     Incorrect email or password.
                   </Typography>
                 )}
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Role</FormLabel>
+                  <RadioGroup
+                    aria-label="role"
+                    name="role"
+                    required
+                    value={values.role}
+                    onChange={handleChange}
+                  >
+                    <FormControlLabel
+                      value="Student"
+                      control={<Radio />}
+                      label="Student"
+                    />
+                    <FormControlLabel
+                      value="Company"
+                      control={<Radio />}
+                      label="Company"
+                    />
+                  </RadioGroup>
+                </FormControl>
                 <Button
                   type="submit"
                   fullWidth

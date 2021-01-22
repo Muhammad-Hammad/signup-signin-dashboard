@@ -162,12 +162,35 @@ const forgotError = () => {
 //   };
 // };
 
-export const loginUser = (email, password) => (dispatch) => {
+export const loginUser = (email, password, role) => (dispatch) => {
   dispatch(requestLogin());
-  Firebase.auth()
-    .signInWithEmailAndPassword(email, password)
-    .then((user) => {
-      dispatch(receiveLogin(user));
+  // let UID = Firebase.auth().currentUser?.uid;
+  Firebase.database()
+    .ref(`/Users/${role}`)
+    .get()
+    .then((snapshot) => {
+      const data = snapshot.val();
+      const newArray = Object.entries(data);
+      console.log("data in obj", data);
+      console.log("data", newArray);
+      const filtered = newArray.filter(
+        (val, ind, arr) => email === val[1].email
+      );
+      console.log(filtered[0][1].email);
+      const newEmail = filtered[0][1].email;
+      console.log(newEmail);
+      if (newEmail === email) {
+        Firebase.auth()
+          .signInWithEmailAndPassword(email, password)
+          .then((user) => {
+            console.log(user, "user");
+            // if( role == user.role)
+            dispatch(receiveLogin(user));
+          })
+          .catch((error) => {
+            dispatch(loginError());
+          });
+      }
     })
     .catch((error) => {
       dispatch(loginError());
@@ -186,26 +209,26 @@ export const logoutUser = () => (dispatch) => {
     });
 };
 
-export const signupUser = (fname, lname, email, password) => (dispatch) => {
+export const signupUser = (fname, lname, email, password, role) => (
+  dispatch
+) => {
   dispatch(requestSignup());
   Firebase.auth()
     .createUserWithEmailAndPassword(email, password)
     .then((user) => {
       dispatch(receiveSignup(user));
       let UID = Firebase.auth().currentUser?.uid;
-      console.log("user.uid ", UID);
-      Firebase.database()
-        .ref("/Users/" + UID)
-        .set({
-          uuid: UID,
-          fname: fname,
-          lname: lname,
-          email: email,
-          password: password,
-        });
+
+      Firebase.database().ref(`/Users/${role}/${UID}`).set({
+        uid: UID,
+        fname: fname,
+        lname: lname,
+        email: email,
+        password: password,
+        role: role,
+      });
     })
     .catch((error) => {
-      // console.log("error", error.message);
       dispatch(signupError(error));
     });
 };
@@ -231,3 +254,18 @@ export const sendResetEmail = (email) => (dispatch) => {
       console.log("Error", Error);
     });
 };
+
+/*            INCOMPLETE WORK                     */
+// export const detectRole = (uid) => (dispatch) => {
+//   Firebase.database()
+//     .ref(`/Users/`)
+//     .get()
+//     .then((snapshot) => {
+//       const data = snapshot.val();
+//       const newArray = Object.entries(data);
+//       console.log("data in obj", data);
+//       console.log("data", newArray);
+//       const filtered = newArray.filter((val, ind, arr) => uid === val[1].email);
+//       console.log(filtered);
+//     });
+// };

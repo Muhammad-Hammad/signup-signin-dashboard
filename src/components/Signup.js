@@ -9,7 +9,11 @@ import { Formik, Form } from "formik";
 import * as yup from "yup";
 import { SignupSchema } from "../Validation/Validation";
 import Loader from "./loader";
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
 // import Checkbox from '@material-ui/core/Checkbox';
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
@@ -56,18 +60,20 @@ export default function SignUp() {
     lastName: "",
     email: "",
     password: "",
+    role: "Student",
   };
   const state = useSelector((state) => state.auth);
   const handleSubmit = (e, { resetForm }) => {
     setLoading(true);
 
-    dispatch(signupUser(e.firstName, e.lastName, e.email, e.password));
+    dispatch(signupUser(e.firstName, e.lastName, e.email, e.password, e.role));
     resetForm({
       values: {
         firstName: "",
         lastName: "",
         email: "",
         password: "",
+        role: "",
       },
     });
   };
@@ -196,12 +202,32 @@ export default function SignUp() {
                     />
                   </Grid>
                 </Grid>
-                {/* {console.log(errors)} */}
                 {signup.error && (
                   <Typography component="p" className={classes.errorText}>
                     {signup.errorMsg}
                   </Typography>
                 )}
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Role</FormLabel>
+                  <RadioGroup
+                    aria-label="role"
+                    name="role"
+                    required
+                    value={values.role}
+                    onChange={handleChange}
+                  >
+                    <FormControlLabel
+                      value="Student"
+                      control={<Radio />}
+                      label="Student"
+                    />
+                    <FormControlLabel
+                      value="Company"
+                      control={<Radio />}
+                      label="Company"
+                    />
+                  </RadioGroup>
+                </FormControl>
                 <Button
                   type="submit"
                   fullWidth
