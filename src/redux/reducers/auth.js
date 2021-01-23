@@ -12,6 +12,10 @@ import {
   SIGNUP_REQUEST,
   FORGOT_REQUEST,
   FORGOT_SUCCESS,
+  FORGOT_FAILURE,
+  GETROLE_REQUEST,
+  GETROLE_SUCCESS,
+  GETROLE_FAILURE,
 } from "../Constants";
 
 const initState = {
@@ -19,6 +23,7 @@ const initState = {
     loading: false,
     error: false,
     success: false,
+    errorMsg: "",
   },
   logout: {
     loading: false,
@@ -36,6 +41,12 @@ const initState = {
     error: false,
   },
   forgot: {
+    loading: false,
+    error: false,
+    success: false,
+    errorMsg: "",
+  },
+  getRole: {
     loading: false,
     error: false,
     success: false,
@@ -65,7 +76,7 @@ export default function Auth(state = initState, action) {
           success: true,
         },
         users: {
-          user: action.payload.user,
+          user: action?.payload?.user,
         },
       };
     case LOGIN_FAILURE:
@@ -75,6 +86,7 @@ export default function Auth(state = initState, action) {
           loading: false,
           error: true,
           success: false,
+          errorMsg: action?.payload?.error,
         },
       };
     case LOGOUT_REQUEST:
@@ -146,7 +158,7 @@ export default function Auth(state = initState, action) {
           success: true,
         },
         users: {
-          user: action.payload.user,
+          user: action?.payload?.user,
         },
       };
     case SIGNUP_FAILURE:
@@ -156,7 +168,7 @@ export default function Auth(state = initState, action) {
           loading: false,
           error: true,
           success: false,
-          errorMsg: action.payload.error,
+          errorMsg: action?.payload?.error,
         },
       };
     case FORGOT_REQUEST:
@@ -176,6 +188,40 @@ export default function Auth(state = initState, action) {
           error: false,
           success: true,
         },
+      };
+    case FORGOT_FAILURE:
+      return {
+        ...state,
+        forgot: {
+          loading: false,
+          error: true,
+          success: false,
+          errorMsg: action?.payload?.error,
+        },
+      };
+    case GETROLE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: false,
+        success: false,
+        errorMsg: "",
+      };
+    case GETROLE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        success: true,
+        errorMsg: "",
+      };
+    case GETROLE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: true,
+        success: false,
+        errorMsg: action?.payload?.error,
       };
     default:
       return state;

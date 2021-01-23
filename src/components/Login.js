@@ -21,6 +21,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
 import { SigninSchema } from "../Validation/Validation";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -66,6 +67,9 @@ function Login() {
         role: values.role,
       },
     });
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   };
 
   const { login, signup } = state;
@@ -143,9 +147,10 @@ function Login() {
                   </Grid>
                 </Grid>
                 {login.error && !values.email && (
-                  <Typography component="p" className={classes.errorText}>
-                    Incorrect email or password.
-                  </Typography>
+                  // <Typography component="p" className={classes.errorText}>
+                  //   {login.errorMsg}
+                  // </Typography>
+                  <Alert severity="error">{login.errorMsg}</Alert>
                 )}
                 <FormControl component="fieldset">
                   <FormLabel component="legend">Role</FormLabel>

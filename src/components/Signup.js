@@ -23,6 +23,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { signupUser } from "../redux/actions";
+import Alert from "@material-ui/lab/Alert";
 
 // const regex = /[^A-Za-z]/gi;
 
@@ -54,7 +55,6 @@ export default function SignUp() {
   const classes = useStyles();
 
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
   let initialValues = {
     firstName: "",
     lastName: "",
@@ -63,9 +63,9 @@ export default function SignUp() {
     role: "Student",
   };
   const state = useSelector((state) => state.auth);
-  const handleSubmit = (e, { resetForm }) => {
-    setLoading(true);
+  let { signup, login } = state;
 
+  const handleSubmit = (e, { resetForm }) => {
     dispatch(signupUser(e.firstName, e.lastName, e.email, e.password, e.role));
     resetForm({
       values: {
@@ -73,14 +73,10 @@ export default function SignUp() {
         lastName: "",
         email: "",
         password: "",
-        role: "",
+        role: "Student",
       },
     });
   };
-  let { signup, login } = state;
-  if (signup.error && loading) {
-    setLoading(false);
-  }
 
   if (signup.success || login.success) {
     return <Redirect to="/" />;
@@ -203,9 +199,10 @@ export default function SignUp() {
                   </Grid>
                 </Grid>
                 {signup.error && (
-                  <Typography component="p" className={classes.errorText}>
-                    {signup.errorMsg}
-                  </Typography>
+                  // <Typography component="p" className={classes.errorText}>
+                  //   {signup.errorMsg}
+                  // </Typography>
+                  <Alert severity="error">{signup.errorMsg}</Alert>
                 )}
                 <FormControl component="fieldset">
                   <FormLabel component="legend">Role</FormLabel>
@@ -236,7 +233,7 @@ export default function SignUp() {
                   className={classes.submit}
                   disabled={!dirty}
                 >
-                  {!loading ? "Sign Up" : <Loader />}
+                  {!signup.loading ? "Sign Up" : <Loader />}
                 </Button>
                 <Grid container justify="flex-end">
                   <Grid item>

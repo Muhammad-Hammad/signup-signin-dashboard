@@ -14,6 +14,7 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,39 +40,36 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     padding: "5px",
   },
+  errorText: {
+    color: "white",
+    backgroundColor: "red",
+    textAlign: "center",
+    padding: "5px",
+  },
 }));
 
 function ForgotPassword() {
-  const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   let initialValues = {
     email: "",
   };
   const state = useSelector((state) => state.auth);
+  let { login, signup, forgot } = state;
   const dispatch = useDispatch();
   const handleSubmit = (values, { resetForm }) => {
-    setLoading(true);
-    setShow(true);
     dispatch(sendResetEmail(values.email));
     resetForm({
       values: {
         email: "",
       },
     });
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+    setShow(true);
     setTimeout(() => {
       setShow(false);
-    }, 1500);
+    }, 3000);
   };
-
-  const { login, signup } = state;
+  const successMsg = "An Email has been sent to you!";
   const classes = useStyles();
-  if (login.error && loading) {
-    setLoading(false);
-    // setShow(false);
-  }
   if (login.success || signup.success) {
     return <Redirect to="/" />;
   } else {
@@ -123,16 +121,12 @@ function ForgotPassword() {
                   className={classes.submit}
                   disabled={!dirty}
                 >
-                  {!loading ? "Submit" : <Loader />}
+                  {!forgot.loading ? "Submit" : <Loader />}
                 </Button>
-                {show && (
-                  <Typography
-                    component="p"
-                    className={classes.successText}
-                    variant="body2"
-                  >
-                    An Email has been sent to you!
-                  </Typography>
+                {!forgot.loading && show && (
+                  <Alert severity={forgot.error ? "error" : "success"}>
+                    {forgot.error ? forgot.errorMsg : successMsg}
+                  </Alert>
                 )}
                 <Grid container justify="flex-end">
                   <Grid item xs>

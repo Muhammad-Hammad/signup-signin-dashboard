@@ -17,6 +17,10 @@ export const FORGOT_REQUEST = "FORGOT_REQUEST";
 export const FORGOT_SUCCESS = "FORGOT_SUCCESS";
 export const FORGOT_FAILURE = "FORGOT_FAILURE";
 
+export const GETROLE_REQUEST = "GETROLE_REQUEST";
+export const GETROLE_SUCCESS = "GETROLE_SUCCESS";
+export const GETROLE_FAILURE = "GETROLE_FAILURE";
+
 export const ADMIN = "ADMIN";
 export const COMPANY = "COMPANY";
 export const STUDENT = "STUDENT";

@@ -13,6 +13,8 @@ import {
   SIGNUP_FAILURE,
   FORGOT_REQUEST,
   FORGOT_SUCCESS,
+  FORGOT_FAILURE,
+  GETROLE_REQUEST,
 } from "../Constants";
 const requestLogin = () => {
   return {
@@ -27,9 +29,10 @@ const receiveLogin = (user) => {
   };
 };
 
-const loginError = () => {
+const loginError = (error) => {
   return {
     type: LOGIN_FAILURE,
+    payload: { error },
   };
 };
 
@@ -45,9 +48,10 @@ const receiveLogout = () => {
   };
 };
 
-const logoutError = () => {
+const logoutError = (error) => {
   return {
     type: LOGOUT_FAILURE,
+    payload: { error },
   };
 };
 
@@ -90,89 +94,41 @@ const receiveForgot = () => {
     type: FORGOT_SUCCESS,
   };
 };
-const forgotError = () => {
+const forgotError = (error) => {
   return {
-    type: FORGOT_SUCCESS,
+    type: FORGOT_FAILURE,
+    payload: { error },
   };
 };
-// const requestLogin = () => {
-//   return {
-//     type: LOGIN_REQUEST,
-//   };
-// };
+const requestGetRole = () => {
+  return {
+    type: GETROLE_REQUEST,
+  };
+};
+const receiveGetrole = () => {
+  return {};
+};
 
-// const receiveLogin = (user) => {
-//   return {
-//     type: LOGIN_SUCCESS,
-//     user,
-//   };
-// };
-
-// const loginError = () => {
-//   return {
-//     type: LOGIN_FAILURE,
-//   };
-// };
-
-// const requestLogout = () => {
-//   return {
-//     type: LOGOUT_REQUEST,
-//   };
-// };
-
-// const receiveLogout = () => {
-//   return {
-//     type: LOGOUT_SUCCESS,
-//   };
-// };
-
-// const logoutError = () => {
-//   return {
-//     type: LOGOUT_FAILURE,
-//   };
-// };
-
-// const verifyRequest = () => {
-//   return {
-//     type: VERIFY_REQUEST,
-//   };
-// };
-
-// const verifySuccess = () => {
-//   return {
-//     type: VERIFY_SUCCESS,
-//   };
-// };
-// const requestSignup = () => {
-//   return {
-//     type: SIGNUP_REQUEST,
-//   };
-// };
-// const receiveSignup = (user) => {
-//   return {
-//     type: SIGNUP_SUCCESS,
-//     user,
-//   };
-// };
-// const signupError = (error) => {
-//   // console.log(error);
-//   return {
-//     type: SIGNUP_FAILURE,
-//     signUpError: error.message,
-//   };
-// };
-
+const err = "user doesn't exist on this role!";
 export const loginUser = (email, password, role) => (dispatch) => {
   dispatch(requestLogin());
-  // let UID = Firebase.auth().currentUser?.uid;
   Firebase.database()
     .ref(`/Users/${role}`)
     .get()
     .then((snapshot) => {
       const data = snapshot.val();
       const newArray = Object.entries(data);
-      const filtered = newArray.filter((val) => email === val[1].email);
-      const newEmail = filtered[0][1].email;
+      if (!newArray.length) {
+        console.log("new array", err);
+        return dispatch(loginError(err));
+      }
+      const filtered = newArray.filter((val) => email === val[1]?.email);
+      if (!filtered.length) {
+        console.log(err);
+        return dispatch(loginError(err));
+      }
+      const newEmail = filtered[0][1]?.email;
+
       console.log(newEmail);
       if (newEmail === email) {
         Firebase.auth()
@@ -182,12 +138,14 @@ export const loginUser = (email, password, role) => (dispatch) => {
             dispatch(receiveLogin(user));
           })
           .catch((error) => {
-            dispatch(loginError());
+            console.log("error 1st catch ", error);
+            dispatch(loginError(error.message));
           });
       }
     })
     .catch((error) => {
-      dispatch(loginError());
+      console.log("error 2nd catch", err);
+      dispatch(loginError(err));
     });
 };
 
@@ -223,7 +181,8 @@ export const signupUser = (fname, lname, email, password, role) => (
       });
     })
     .catch((error) => {
-      dispatch(signupError(error));
+      // console.log(error.message);
+      dispatch(signupError(error.message));
     });
 };
 
@@ -242,24 +201,26 @@ export const sendResetEmail = (email) => (dispatch) => {
   Firebase.auth()
     .sendPasswordResetEmail(email)
     .then(() => {
-      console.log("Success");
+      dispatch(receiveForgot());
+      // console.log("Success", success);
     })
-    .catch(() => {
-      console.log("Error", Error);
+    .catch((error) => {
+      console.log("Error", error.message);
+      dispatch(forgotError(error.message));
     });
 };
 
 /*            INCOMPLETE WORK                     */
-// export const detectRole = (uid) => (dispatch) => {
-//   Firebase.database()
-//     .ref(`/Users/`)
-//     .get()
-//     .then((snapshot) => {
-//       const data = snapshot.val();
-//       const newArray = Object.entries(data);
-//       console.log("data in obj", data);
-//       console.log("data", newArray);
-//       const filtered = newArray.filter((val, ind, arr) => uid === val[1].email);
-//       console.log(filtered);
-//     });
-// };
+export const detectRole = (uid) => (dispatch) => {
+  Firebase.database()
+    .ref(`/Users/`)
+    .get()
+    .then((snapshot) => {
+      const data = snapshot.val();
+      const newArray = Object.entries(data);
+      console.log("data in obj", data);
+      console.log("data", newArray);
+      const filtered = newArray.filter((val, ind, arr) => uid === val[1].email);
+      console.log(filtered);
+    });
+};

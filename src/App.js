@@ -10,6 +10,9 @@ function App() {
   const state = useSelector((state) => state.auth);
 
   const { signup, login, verify } = state;
+
+  // if(login.loading){
+  // if (student){
   return (
     <Switch>
       <ProtectedRoute
@@ -24,6 +27,9 @@ function App() {
       <Route path="/forgotPassword" component={forgotPassword} />
     </Switch>
   );
+  //   } else if (company){
+
+  //   }
 }
 
 // function mapStateToProps(state) {
