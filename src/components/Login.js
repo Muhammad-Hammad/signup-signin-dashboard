@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
 function Login() {
   // let [newEmail, setEmail] = useState("");
   // let [newPassword, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   let initialValues = {
     email: "",
     password: "",
@@ -58,7 +57,6 @@ function Login() {
   const state = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const handleSubmit = (values, { resetForm }) => {
-    setLoading(true);
     dispatch(loginUser(values.email, values.password, values.role));
     resetForm({
       values: {
@@ -67,16 +65,10 @@ function Login() {
         role: values.role,
       },
     });
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
   };
 
   const { login, signup } = state;
   const classes = useStyles();
-  if (login.error && loading) {
-    setLoading(false);
-  }
   if (login.success || signup.success) {
     return <Redirect to="/" />;
   } else {
@@ -181,7 +173,7 @@ function Login() {
                   className={classes.submit}
                   disabled={!dirty}
                 >
-                  {!loading ? "Sign in" : <Loader />}
+                  {!login.loading ? "Sign in" : <Loader />}
                 </Button>
                 <Grid container justify="flex-end">
                   <Grid item xs>

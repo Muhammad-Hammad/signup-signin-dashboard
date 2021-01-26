@@ -56,8 +56,7 @@ export default function SignUp() {
 
   const dispatch = useDispatch();
   let initialValues = {
-    firstName: "",
-    lastName: "",
+    userName: "",
     email: "",
     password: "",
     role: "Student",
@@ -66,11 +65,10 @@ export default function SignUp() {
   let { signup, login } = state;
 
   const handleSubmit = (e, { resetForm }) => {
-    dispatch(signupUser(e.firstName, e.lastName, e.email, e.password, e.role));
+    dispatch(signupUser(e.userName, e.email, e.password, e.role));
     resetForm({
       values: {
-        firstName: "",
-        lastName: "",
+        userName: "",
         email: "",
         password: "",
         role: "Student",
@@ -98,7 +96,7 @@ export default function SignUp() {
           >
             {({ values, errors, handleChange, touched, isValid, dirty }) => (
               <Form className={classes.form}>
-                <Grid container spacing={2}>
+                {/* <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       error={
@@ -149,61 +147,86 @@ export default function SignUp() {
                       }}
                       onChange={handleChange}
                     />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      error={Boolean(errors.email) && Boolean(touched.email)}
-                      variant="outlined"
-                      required
-                      value={values.email}
-                      fullWidth
-                      id="email"
-                      label="Email"
-                      name="email"
-                      autoComplete="email"
-                      helperText={
-                        errors.email && touched.email ? errors.email : null
-                      }
-                      onFocus={() => {
-                        signup.errorMsg = "";
-                        touched.email = "";
-                      }}
-                      onChange={handleChange}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      error={
-                        Boolean(errors.password) && Boolean(touched.password)
-                      }
-                      variant="outlined"
-                      value={values.password}
-                      required
-                      fullWidth
-                      name="password"
-                      label="Password"
-                      type="password"
-                      id="password"
-                      autoComplete="current-password"
-                      helperText={
-                        errors.password && touched.password
-                          ? errors.password
-                          : null
-                      }
-                      onFocus={() => {
-                        signup.errorMsg = "";
-                        touched.password = "";
-                      }}
-                      onChange={handleChange}
-                    />
-                  </Grid>
+                  </Grid> */}
+
+                <Grid item xs={12}>
+                  <TextField
+                    error={
+                      Boolean(errors.userName) && Boolean(touched.userName)
+                    }
+                    variant="outlined"
+                    required
+                    value={values.userName}
+                    fullWidth
+                    id="userName"
+                    label="UserName"
+                    name="userName"
+                    autoComplete="userName"
+                    helperText={
+                      errors.userName && touched.userName
+                        ? errors.userName
+                        : null
+                    }
+                    onFocus={() => {
+                      signup.errorMsg = "";
+                      touched.userName = "";
+                    }}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <br />
+                <Grid item xs={12}>
+                  <TextField
+                    error={Boolean(errors.email) && Boolean(touched.email)}
+                    variant="outlined"
+                    required
+                    value={values.email}
+                    fullWidth
+                    id="email"
+                    label="Email"
+                    name="email"
+                    autoComplete="email"
+                    helperText={
+                      errors.email && touched.email ? errors.email : null
+                    }
+                    onFocus={() => {
+                      signup.errorMsg = "";
+                      touched.email = "";
+                    }}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <br />
+                <Grid item xs={12}>
+                  <TextField
+                    error={
+                      Boolean(errors.password) && Boolean(touched.password)
+                    }
+                    variant="outlined"
+                    value={values.password}
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    helperText={
+                      errors.password && touched.password
+                        ? errors.password
+                        : null
+                    }
+                    onFocus={() => {
+                      signup.errorMsg = "";
+                      touched.password = "";
+                    }}
+                    onChange={handleChange}
+                  />
                 </Grid>
                 {signup.error && (
-                  // <Typography component="p" className={classes.errorText}>
-                  //   {signup.errorMsg}
-                  // </Typography>
                   <Alert severity="error">{signup.errorMsg}</Alert>
                 )}
+                <br />
                 <FormControl component="fieldset">
                   <FormLabel component="legend">Role</FormLabel>
                   <RadioGroup

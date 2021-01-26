@@ -16,6 +16,9 @@ import {
   GETROLE_REQUEST,
   GETROLE_SUCCESS,
   GETROLE_FAILURE,
+  ADDJOB_REQUEST,
+  ADDJOB_SUCCESS,
+  ADDJOB_FAILURE,
 } from "../Constants";
 
 const initState = {
@@ -52,9 +55,15 @@ const initState = {
     success: false,
     errorMsg: "",
   },
-  users: {
-    user: {},
+  AddJob: {
+    loading: false,
+    error: false,
+    success: false,
+    errorMsg: "",
   },
+  user: {},
+  role: "",
+  Jobs: [],
 };
 export default function Auth(state = initState, action) {
   switch (action.type) {
@@ -111,9 +120,8 @@ export default function Auth(state = initState, action) {
         signup: {
           success: false,
         },
-        users: {
-          user: {},
-        },
+        user: {},
+        role: "",
       };
     case LOGOUT_FAILURE:
       return {
@@ -157,9 +165,7 @@ export default function Auth(state = initState, action) {
           error: false,
           success: true,
         },
-        users: {
-          user: action?.payload?.user,
-        },
+        user: action?.payload?.user,
       };
     case SIGNUP_FAILURE:
       return {
@@ -202,119 +208,68 @@ export default function Auth(state = initState, action) {
     case GETROLE_REQUEST:
       return {
         ...state,
-        loading: true,
-        error: false,
-        success: false,
-        errorMsg: "",
+        getRole: {
+          loading: true,
+          error: false,
+          success: false,
+          errorMsg: "",
+        },
       };
     case GETROLE_SUCCESS:
       return {
         ...state,
-        loading: false,
-        error: false,
-        success: true,
-        errorMsg: "",
+        forgot: {
+          loading: false,
+          error: false,
+          success: true,
+          errorMsg: "",
+        },
+        role: action?.payload?.role,
       };
     case GETROLE_FAILURE:
       return {
         ...state,
-        loading: false,
-        error: true,
-        success: false,
-        errorMsg: action?.payload?.error,
+        forgot: {
+          loading: false,
+          error: false,
+          success: true,
+          errorMsg: action?.payload?.error,
+        },
       };
+    case ADDJOB_REQUEST:
+      return {
+        ...state,
+        addJob: {
+          loading: true,
+          error: false,
+          success: false,
+          errorMsg: "",
+        },
+      };
+    case ADDJOB_SUCCESS: {
+      return {
+        ...state,
+        addJob: {
+          loading: false,
+          error: false,
+          success: true,
+          errorMsg: "",
+        },
+        Jobs: [...state?.Jobs, action?.payload?.jobs],
+      };
+    }
+    case ADDJOB_FAILURE: {
+      return {
+        ...state,
+        addJob: {
+          loading: false,
+          error: true,
+          success: false,
+          errorMsg: action?.payload?.error,
+        },
+      };
+    }
     default:
       return state;
   }
 }
-
-// eslint-disable-next-line import/no-anonymous-default-export
-// export default (
-//   state = {
-//     isLoggingIn: false,
-//     isLoggingOut: false,
-//     isVerifying: false,
-//     loginError: false,
-//     logoutError: false,
-//     isAuthenticated: false,
-//     is_Signup: false,
-//     signUpError: "",
-//     signUpErrorMsg: false,
-//     user: {},
-//   },
-//   action
-// ) => {
-//   switch (action.type) {
-//     case LOGIN_REQUEST:
-//       return {
-//         ...state,
-//         isLoggingIn: true,
-//         loginError: false,
-//       };
-//     case LOGIN_SUCCESS:
-//       return {
-//         ...state,
-//         isLoggingIn: false,
-//         isAuthenticated: true,
-//         user: action.user,
-//       };
-//     case LOGIN_FAILURE:
-//       return {
-//         ...state,
-//         isLoggingIn: false,
-//         isAuthenticated: false,
-//         loginError: true,
-//       };
-//     case LOGOUT_REQUEST:
-//       return {
-//         ...state,
-//         isLoggingOut: true,
-//         logoutError: false,
-//       };
-//     case LOGOUT_SUCCESS:
-//       return {
-//         ...state,
-//         isLoggingOut: false,
-//         isAuthenticated: false,
-//         user: {},
-//       };
-//     case LOGOUT_FAILURE:
-//       return {
-//         ...state,
-//         isLoggingOut: false,
-//         logoutError: true,
-//       };
-//     case VERIFY_REQUEST:
-//       return {
-//         ...state,
-//         isVerifying: true,
-//         verifyingError: false,
-//       };
-//     case VERIFY_SUCCESS:
-//       return {
-//         ...state,
-//         isVerifying: false,
-//       };
-//     case SIGNUP_REQUEST:
-//       return {
-//         ...state,
-//         is_Signup: true,
-//         // signUpError: false,
-//       };
-//     case SIGNUP_SUCCESS:
-//       return {
-//         ...state,
-//         // signupError: false,
-//         user: action.user,
-//       };
-//     case SIGNUP_FAILURE:
-//       return {
-//         ...state,
-//         signUpError: action.signUpError,
-//         signUpErrorMsg: true,
-//       };
-
-//     default:
-//       return state;
-//   }
-// };

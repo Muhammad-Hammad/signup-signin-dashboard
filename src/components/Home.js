@@ -8,7 +8,7 @@ function Home() {
   };
 
   const state = useSelector((state) => state.auth);
-  const { isLoggingOut, logoutError, logout, users } = state;
+  const { isLoggingOut, logoutError, roles, logout, users } = state;
   //   console.log(user);
   return (
     <div>
@@ -16,7 +16,7 @@ function Home() {
       <h1>This is your app's protected area.🚀🚀🚀</h1>
       <h3>email:{users.user.email} 🚀🚀🚀</h3>
       <h3>uid:{users.user.uid} 🚀🚀🚀🚀🚀 </h3>
-      <h3>ROle: {users.user.role}</h3>
+      {/* <h3>ROle: {roles.role}</h3> */}
       <p>Any routes here will also be protected</p>
       <button onClick={handleLogout}>Logout</button>
       {logout.loading && <p>Logging Out....</p>}

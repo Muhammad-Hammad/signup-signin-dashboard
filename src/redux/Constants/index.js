@@ -21,6 +21,10 @@ export const GETROLE_REQUEST = "GETROLE_REQUEST";
 export const GETROLE_SUCCESS = "GETROLE_SUCCESS";
 export const GETROLE_FAILURE = "GETROLE_FAILURE";
 
+export const ADDJOB_REQUEST = "ADDJOB_REQUEST";
+export const ADDJOB_SUCCESS = "ADDJOB_SUCCESS";
+export const ADDJOB_FAILURE = "ADDJOB_FAILURE";
+
 export const ADMIN = "ADMIN";
 export const COMPANY = "COMPANY";
 export const STUDENT = "STUDENT";

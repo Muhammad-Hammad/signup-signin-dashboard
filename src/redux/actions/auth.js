@@ -15,6 +15,11 @@ import {
   FORGOT_SUCCESS,
   FORGOT_FAILURE,
   GETROLE_REQUEST,
+  GETROLE_SUCCESS,
+  GETROLE_FAILURE,
+  ADDJOB_REQUEST,
+  ADDJOB_SUCCESS,
+  ADDJOB_FAILURE,
 } from "../Constants";
 const requestLogin = () => {
   return {
@@ -105,32 +110,62 @@ const requestGetRole = () => {
     type: GETROLE_REQUEST,
   };
 };
-const receiveGetrole = () => {
-  return {};
+const receiveGetRole = (role) => {
+  return {
+    type: GETROLE_SUCCESS,
+    payload: { role },
+  };
+};
+const getRoleError = () => {
+  return {
+    type: GETROLE_FAILURE,
+  };
+};
+const requestAddJob = () => {
+  return {
+    type: ADDJOB_REQUEST,
+  };
+};
+const receiveAddJob = () => {
+  return {
+    type: ADDJOB_SUCCESS,
+    payload: {},
+  };
+};
+const AddJobError = () => {
+  return {
+    type: ADDJOB_FAILURE,
+  };
 };
 
 const err = "user doesn't exist on this role!";
 export const loginUser = (email, password, role) => (dispatch) => {
   dispatch(requestLogin());
   Firebase.database()
-    .ref(`/Users/${role}`)
+    .ref(`/Users/`)
     .get()
     .then((snapshot) => {
       const data = snapshot.val();
+      console.log(data);
+
       const newArray = Object.entries(data);
+      console.log("newArray", newArray);
       if (!newArray.length) {
         console.log("new array", err);
         return dispatch(loginError(err));
       }
       const filtered = newArray.filter((val) => email === val[1]?.email);
+      console.log("filtered", filtered);
       if (!filtered.length) {
         console.log(err);
         return dispatch(loginError(err));
       }
       const newEmail = filtered[0][1]?.email;
-
+      const newRole = filtered[0][1]?.role;
       console.log(newEmail);
-      if (newEmail === email) {
+      console.log(newRole);
+
+      if (newEmail === email && newRole === role) {
         Firebase.auth()
           .signInWithEmailAndPassword(email, password)
           .then((user) => {
@@ -141,6 +176,9 @@ export const loginUser = (email, password, role) => (dispatch) => {
             console.log("error 1st catch ", error);
             dispatch(loginError(error.message));
           });
+      } else {
+        console.log("error inside catch", err);
+        dispatch(loginError(err));
       }
     })
     .catch((error) => {
@@ -161,9 +199,7 @@ export const logoutUser = () => (dispatch) => {
     });
 };
 
-export const signupUser = (fname, lname, email, password, role) => (
-  dispatch
-) => {
+export const signupUser = (userName, email, password, role) => (dispatch) => {
   dispatch(requestSignup());
   Firebase.auth()
     .createUserWithEmailAndPassword(email, password)
@@ -171,15 +207,15 @@ export const signupUser = (fname, lname, email, password, role) => (
       dispatch(receiveSignup(user));
       let UID = Firebase.auth().currentUser?.uid;
 
-      Firebase.database().ref(`/Users/${role}/${UID}`).set({
+      Firebase.database().ref(`/Users/${UID}`).set({
         uid: UID,
-        fname: fname,
-        lname: lname,
+        userName: userName,
         email: email,
         password: password,
         role: role,
       });
     })
+
     .catch((error) => {
       // console.log(error.message);
       dispatch(signupError(error.message));
@@ -211,16 +247,25 @@ export const sendResetEmail = (email) => (dispatch) => {
 };
 
 /*            INCOMPLETE WORK                     */
-export const detectRole = (uid) => (dispatch) => {
+export const detectRole = (UID) => (dispatch) => {
+  dispatch(requestGetRole());
+  // const UID = Firebase.auth().currentUser?.uid;
+  console.log(UID);
   Firebase.database()
-    .ref(`/Users/`)
+    .ref(`/Users/${UID}`)
     .get()
     .then((snapshot) => {
       const data = snapshot.val();
-      const newArray = Object.entries(data);
-      console.log("data in obj", data);
-      console.log("data", newArray);
-      const filtered = newArray.filter((val, ind, arr) => uid === val[1].email);
-      console.log(filtered);
+
+      console.log(data);
+
+      const role = data?.role;
+      console.log(role);
+      dispatch(receiveGetRole(role));
+    })
+    .catch((error) => {
+      console.log("error", error);
+      dispatch(getRoleError(error));
     });
 };
+export const addJob = () => (dispatch) => {};

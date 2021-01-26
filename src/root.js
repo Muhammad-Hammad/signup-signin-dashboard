@@ -9,7 +9,9 @@ import ForgotPassword from "./components/forgotPassword";
 // import Signup from "./components/Signup"
 import { firebaseConfig } from "./firebase/firebase";
 import configureStore from "./redux/configureStore";
-
+import JobCard from "./components/JobCard";
+import CompanyHome from "./components/company/CompanyHome";
+import Signup from "./components/Signup";
 Firebase.initializeApp(firebaseConfig);
 
 const store = configureStore();
