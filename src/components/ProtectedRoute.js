@@ -1,9 +1,11 @@
 import { Route, Redirect } from "react-router-dom";
+import Appbar from "./Appbar";
 import Loader from "./loader";
 const ProtectedRoute = ({
   component: Component,
   isAuthenticated,
   isVerifying,
+  routeName,
   ...rest
 }) => (
   <Route
@@ -12,12 +14,14 @@ const ProtectedRoute = ({
       isVerifying ? (
         <Loader />
       ) : isAuthenticated ? (
-        <Component {...props} />
+        <Appbar routeName={routeName}>
+          <Component {...props} />
+        </Appbar>
       ) : (
         <Redirect
           to={{
             pathname: "/login",
-            state: { from: props.location },
+            // state: { from: props.location },
           }}
         />
       )

@@ -14,9 +14,9 @@ import {
   FORGOT_REQUEST,
   FORGOT_SUCCESS,
   FORGOT_FAILURE,
-  GETROLE_REQUEST,
-  GETROLE_SUCCESS,
-  GETROLE_FAILURE,
+  GETDATA_REQUEST,
+  GETDATA_SUCCESS,
+  GETDATA_FAILURE,
   ADDJOB_REQUEST,
   ADDJOB_SUCCESS,
   ADDJOB_FAILURE,
@@ -105,20 +105,20 @@ const forgotError = (error) => {
     payload: { error },
   };
 };
-const requestGetRole = () => {
+const requestgetData = () => {
   return {
-    type: GETROLE_REQUEST,
+    type: GETDATA_REQUEST,
   };
 };
-const receiveGetRole = (role) => {
+const receivegetData = (role, userName) => {
   return {
-    type: GETROLE_SUCCESS,
-    payload: { role },
+    type: GETDATA_SUCCESS,
+    payload: { role, userName },
   };
 };
-const getRoleError = () => {
+const getDataError = () => {
   return {
-    type: GETROLE_FAILURE,
+    type: GETDATA_FAILURE,
   };
 };
 const requestAddJob = () => {
@@ -204,7 +204,6 @@ export const signupUser = (userName, email, password, role) => (dispatch) => {
   Firebase.auth()
     .createUserWithEmailAndPassword(email, password)
     .then((user) => {
-      dispatch(receiveSignup(user));
       let UID = Firebase.auth().currentUser?.uid;
 
       Firebase.database().ref(`/Users/${UID}`).set({
@@ -214,6 +213,7 @@ export const signupUser = (userName, email, password, role) => (dispatch) => {
         password: password,
         role: role,
       });
+      dispatch(receiveSignup(user));
     })
 
     .catch((error) => {
@@ -226,6 +226,7 @@ export const verifyAuth = () => (dispatch) => {
   dispatch(verifyRequest());
   Firebase.auth().onAuthStateChanged((user) => {
     if (user !== null) {
+      console.log("verfiyAuth", user);
       dispatch(receiveLogin(user));
     }
     dispatch(verifySuccess());
@@ -248,7 +249,7 @@ export const sendResetEmail = (email) => (dispatch) => {
 
 /*            INCOMPLETE WORK                     */
 export const detectRole = (UID) => (dispatch) => {
-  dispatch(requestGetRole());
+  dispatch(requestgetData());
   // const UID = Firebase.auth().currentUser?.uid;
   console.log(UID);
   Firebase.database()
@@ -258,14 +259,15 @@ export const detectRole = (UID) => (dispatch) => {
       const data = snapshot.val();
 
       console.log(data);
-
+      const userName = data?.userName;
+      console.log("userName", userName);
       const role = data?.role;
       console.log(role);
-      dispatch(receiveGetRole(role));
+      dispatch(receivegetData(role, userName));
     })
     .catch((error) => {
       console.log("error", error);
-      dispatch(getRoleError(error));
+      dispatch(getDataError(error));
     });
 };
 export const addJob = () => (dispatch) => {};

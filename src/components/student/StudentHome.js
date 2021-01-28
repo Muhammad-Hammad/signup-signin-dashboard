@@ -6,6 +6,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -18,25 +19,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 function StudentHome() {
-  const dispatch = useDispatch();
-  const handleLogout = () => {
-    dispatch(logoutUser());
-  };
   const classes = useStyles();
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Company Name
-          </Typography>
-          <Button color="inherit" onClick={handleLogout}>
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
+  return <div className={classes.root}>main student hun</div>;
 }
 
 export default StudentHome;

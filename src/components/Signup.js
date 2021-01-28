@@ -24,6 +24,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { signupUser } from "../redux/actions";
 import Alert from "@material-ui/lab/Alert";
+import Loading from "./loader";
 
 // const regex = /[^A-Za-z]/gi;
 
@@ -62,7 +63,8 @@ export default function SignUp() {
     role: "Student",
   };
   const state = useSelector((state) => state.auth);
-  let { signup, login } = state;
+  let { signup, login, userName } = state;
+  let str = userName?.replace(/\s+/g, "-").toLowerCase();
 
   const handleSubmit = (e, { resetForm }) => {
     dispatch(signupUser(e.userName, e.email, e.password, e.role));
@@ -77,7 +79,11 @@ export default function SignUp() {
   };
 
   if (signup.success || login.success) {
-    return <Redirect to="/" />;
+    if (str === undefined) {
+      return <Loading />;
+    } else {
+      return <Redirect to={`/${str}`} />;
+    }
   } else {
     return (
       <Container component="main" maxWidth="xs">

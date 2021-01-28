@@ -13,9 +13,9 @@ import {
   FORGOT_REQUEST,
   FORGOT_SUCCESS,
   FORGOT_FAILURE,
-  GETROLE_REQUEST,
-  GETROLE_SUCCESS,
-  GETROLE_FAILURE,
+  GETDATA_REQUEST,
+  GETDATA_SUCCESS,
+  GETDATA_FAILURE,
   ADDJOB_REQUEST,
   ADDJOB_SUCCESS,
   ADDJOB_FAILURE,
@@ -49,7 +49,7 @@ const initState = {
     success: false,
     errorMsg: "",
   },
-  getRole: {
+  getData: {
     loading: false,
     error: false,
     success: false,
@@ -63,6 +63,7 @@ const initState = {
   },
   user: {},
   role: "",
+  userName: "",
   Jobs: [],
 };
 export default function Auth(state = initState, action) {
@@ -84,9 +85,7 @@ export default function Auth(state = initState, action) {
           error: false,
           success: true,
         },
-        users: {
-          user: action?.payload?.user,
-        },
+        user: action?.payload?.user,
       };
     case LOGIN_FAILURE:
       return {
@@ -122,6 +121,7 @@ export default function Auth(state = initState, action) {
         },
         user: {},
         role: "",
+        userName: "",
       };
     case LOGOUT_FAILURE:
       return {
@@ -205,17 +205,17 @@ export default function Auth(state = initState, action) {
           errorMsg: action?.payload?.error,
         },
       };
-    case GETROLE_REQUEST:
+    case GETDATA_REQUEST:
       return {
         ...state,
-        getRole: {
+        getData: {
           loading: true,
           error: false,
           success: false,
           errorMsg: "",
         },
       };
-    case GETROLE_SUCCESS:
+    case GETDATA_SUCCESS:
       return {
         ...state,
         forgot: {
@@ -225,8 +225,9 @@ export default function Auth(state = initState, action) {
           errorMsg: "",
         },
         role: action?.payload?.role,
+        userName: action?.payload?.userName,
       };
-    case GETROLE_FAILURE:
+    case GETDATA_FAILURE:
       return {
         ...state,
         forgot: {

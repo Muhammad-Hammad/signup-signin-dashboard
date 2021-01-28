@@ -6,6 +6,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import { useRouteMatch } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -18,26 +19,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 function CompanyHome() {
-  const dispatch = useDispatch();
-  const handleLogout = () => {
-    dispatch(logoutUser());
-  };
-  const state = useSelector((state) => state.auth);
   const classes = useStyles();
+  let { path, url } = useRouteMatch();
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Company Name
-          </Typography>
-          <Button color="inherit" onClick={handleLogout}>
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
-    </div>
+    <>
+      <Button color="primary" variant="outlined" href={`${url}/AddJob`}>
+        Add Job
+      </Button>
+      <Button color="primary" variant="outlined" href="/ShowJob">
+        Show My Jobs
+      </Button>
+    </>
   );
 }
 

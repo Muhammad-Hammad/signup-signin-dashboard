@@ -22,6 +22,7 @@ import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
 import { SigninSchema } from "../Validation/Validation";
 import Alert from "@material-ui/lab/Alert";
+import Loading from "./loader";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -67,11 +68,18 @@ function Login() {
     });
   };
 
-  const { login, signup } = state;
+  const { login, signup, userName } = state;
+  let str = userName?.replace(/\s+/g, "-").toLowerCase();
+  console.log("login str", str);
   const classes = useStyles();
   if (login.success || signup.success) {
-    return <Redirect to="/" />;
+    if (str === undefined) {
+      return <Loading />;
+    } else {
+      return <Redirect to={`/${str}`} />;
+    }
   } else {
+    // debugger;
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />

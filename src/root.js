@@ -12,6 +12,8 @@ import configureStore from "./redux/configureStore";
 import JobCard from "./components/JobCard";
 import CompanyHome from "./components/company/CompanyHome";
 import Signup from "./components/Signup";
+import AddJob from "./components/company/AddJob";
+
 Firebase.initializeApp(firebaseConfig);
 
 const store = configureStore();
