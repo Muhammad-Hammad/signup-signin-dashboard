@@ -17,16 +17,12 @@ function App() {
   const state = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { signup, login, verify, user, getData, role, userName } = state;
-  console.log(verify);
+
   useEffect(() => {
     dispatch(detectRole(user?.uid));
   }, [user]);
-  console.log("role", role);
-  console.log(userName, "username ");
-  console.log("user", user);
   let str = userName?.replace(/\s+/g, "-").toLowerCase();
   let routeName = userName?.toUpperCase();
-  console.log("str jaba", str);
   if (getData.loading) {
     <Loading />;
   }
@@ -59,7 +55,7 @@ function App() {
           isVerifying={verify.verifying}
           routeName={routeName}
         />
-
+        if (role === "company" && (login.success || signup success)) else {}
         <Route path="/login" component={Login} />
         <Route path="/signup" component={SignUp} />
         <Route path="/forgotPassword" component={forgotPassword} />

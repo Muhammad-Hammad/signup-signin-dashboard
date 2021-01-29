@@ -102,59 +102,6 @@ export default function SignUp() {
           >
             {({ values, errors, handleChange, touched, isValid, dirty }) => (
               <Form className={classes.form}>
-                {/* <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      error={
-                        Boolean(errors.firstName) && Boolean(touched.firstName)
-                      }
-                      autoComplete="firstName"
-                      name="firstName"
-                      variant="outlined"
-                      value={values.firstName}
-                      required
-                      fullWidth
-                      id="firstName"
-                      label="First Name"
-                      autoFocus
-                      helperText={
-                        errors.firstName && touched.firstName
-                          ? errors.firstName
-                          : null
-                      }
-                      onFocus={() => {
-                        signup.errorMsg = "";
-                        touched.firstName = "";
-                      }}
-                      onChange={handleChange}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      error={
-                        Boolean(errors.lastName) && Boolean(touched.lastName)
-                      }
-                      variant="outlined"
-                      required
-                      value={values.lastName}
-                      fullWidth
-                      id="lastName"
-                      label="Last Name"
-                      name="lastName"
-                      autoComplete="lastName"
-                      helperText={
-                        errors.lastName && touched.lastName
-                          ? errors.lastName
-                          : null
-                      }
-                      onFocus={() => {
-                        signup.errorMsg = "";
-                        touched.lastName = "";
-                      }}
-                      onChange={handleChange}
-                    />
-                  </Grid> */}
-
                 <Grid item xs={12}>
                   <TextField
                     error={

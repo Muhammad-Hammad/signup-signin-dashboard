@@ -27,7 +27,6 @@ function Appbar(props) {
 
     history.push("/");
   };
-  console.log("props", props);
   const classes = useStyles();
   return (
     <div className={classes.root}>

@@ -9,10 +9,8 @@ function Home() {
 
   const state = useSelector((state) => state.auth);
   const { isLoggingOut, logoutError, roles, logout, user } = state;
-  //   console.log(user);
   return (
     <div>
-      {console.log(user)}
       <h1>This is your app's protected area.🚀🚀🚀</h1>
       <h3>email:{user?.email} 🚀🚀🚀</h3>
       <h3>uid:{user?.uid} 🚀🚀🚀🚀🚀 </h3>

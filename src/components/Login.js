@@ -70,7 +70,7 @@ function Login() {
 
   const { login, signup, userName } = state;
   let str = userName?.replace(/\s+/g, "-").toLowerCase();
-  console.log("login str", str);
+
   const classes = useStyles();
   if (login.success || signup.success) {
     if (str === undefined) {

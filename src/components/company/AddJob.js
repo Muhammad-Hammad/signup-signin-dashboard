@@ -50,7 +50,6 @@ function AddJob() {
   const { login, signup, userName } = state;
   let str = userName?.replace(/\s+/g, "-").toLowerCase();
   const handleSubmit = (e, { resetForm }) => {
-    console.log(e);
     dispatch(addJob(e.companyName, e.title, e.experience, e.description));
     resetForm({
       values: {

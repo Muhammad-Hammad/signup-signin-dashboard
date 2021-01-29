@@ -83,7 +83,6 @@ const receiveSignup = (user) => {
   };
 };
 const signupError = (error) => {
-  // console.log(error);
   return {
     type: SIGNUP_FAILURE,
     payload: { error },
@@ -146,43 +145,31 @@ export const loginUser = (email, password, role) => (dispatch) => {
     .get()
     .then((snapshot) => {
       const data = snapshot.val();
-      console.log(data);
-
       const newArray = Object.entries(data);
-      console.log("newArray", newArray);
       if (!newArray.length) {
-        console.log("new array", err);
         return dispatch(loginError(err));
       }
       const filtered = newArray.filter((val) => email === val[1]?.email);
-      console.log("filtered", filtered);
       if (!filtered.length) {
-        console.log(err);
         return dispatch(loginError(err));
       }
       const newEmail = filtered[0][1]?.email;
       const newRole = filtered[0][1]?.role;
-      console.log(newEmail);
-      console.log(newRole);
 
       if (newEmail === email && newRole === role) {
         Firebase.auth()
           .signInWithEmailAndPassword(email, password)
           .then((user) => {
-            console.log(user, "user");
             dispatch(receiveLogin(user));
           })
           .catch((error) => {
-            console.log("error 1st catch ", error);
             dispatch(loginError(error.message));
           });
       } else {
-        console.log("error inside catch", err);
         dispatch(loginError(err));
       }
     })
     .catch((error) => {
-      console.log("error 2nd catch", err);
       dispatch(loginError(err));
     });
 };
@@ -217,7 +204,6 @@ export const signupUser = (userName, email, password, role) => (dispatch) => {
     })
 
     .catch((error) => {
-      // console.log(error.message);
       dispatch(signupError(error.message));
     });
 };
@@ -226,7 +212,6 @@ export const verifyAuth = () => (dispatch) => {
   dispatch(verifyRequest());
   Firebase.auth().onAuthStateChanged((user) => {
     if (user !== null) {
-      console.log("verfiyAuth", user);
       dispatch(receiveLogin(user));
     }
     dispatch(verifySuccess());
@@ -239,10 +224,8 @@ export const sendResetEmail = (email) => (dispatch) => {
     .sendPasswordResetEmail(email)
     .then(() => {
       dispatch(receiveForgot());
-      // console.log("Success", success);
     })
     .catch((error) => {
-      console.log("Error", error.message);
       dispatch(forgotError(error.message));
     });
 };
@@ -250,23 +233,17 @@ export const sendResetEmail = (email) => (dispatch) => {
 /*            INCOMPLETE WORK                     */
 export const detectRole = (UID) => (dispatch) => {
   dispatch(requestgetData());
-  // const UID = Firebase.auth().currentUser?.uid;
-  console.log(UID);
+  // const UID = Firebase.auth().currentUser?.uid
   Firebase.database()
     .ref(`/Users/${UID}`)
     .get()
     .then((snapshot) => {
       const data = snapshot.val();
-
-      console.log(data);
       const userName = data?.userName;
-      console.log("userName", userName);
       const role = data?.role;
-      console.log(role);
       dispatch(receivegetData(role, userName));
     })
     .catch((error) => {
-      console.log("error", error);
       dispatch(getDataError(error));
     });
 };
